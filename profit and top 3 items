@@ -1,0 +1,22 @@
+-- PROFIT PER ITEM
+SELECT 
+    m.item_name,
+    SUM(od.quantity * (m.selling_price - m.cost_price)) AS profit
+FROM order_details od
+JOIN menu_items m ON od.item_id = m.item_id
+GROUP BY m.item_name
+ORDER BY profit DESC;
+-- TOP 3 PROFITABLE ITEMS
+SELECT *
+FROM (
+    SELECT 
+        m.item_name,
+        SUM(od.quantity * (m.selling_price - m.cost_price)) AS profit,
+        RANK() OVER (
+            ORDER BY SUM(od.quantity * (m.selling_price - m.cost_price)) DESC
+        ) AS rank_no
+    FROM order_details od
+    JOIN menu_items m ON od.item_id = m.item_id
+    GROUP BY m.item_name
+) ranked_items
+WHERE rank_no <= 3;
