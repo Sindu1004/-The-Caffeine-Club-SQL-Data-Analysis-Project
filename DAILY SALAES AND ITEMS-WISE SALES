@@ -1,0 +1,22 @@
+-- DAILY SALES SUMMARY
+SELECT 
+    o.order_date,
+    COUNT(DISTINCT o.customer_id) AS no_of_customers,
+    COUNT(DISTINCT o.order_id) AS no_of_sales,
+    SUM(od.quantity) AS items_sold,
+    SUM(o.total_amount) AS total_revenue
+FROM orders o
+JOIN order_details od ON o.order_id = od.order_id
+GROUP BY o.order_date
+ORDER BY o.order_date;
+
+-- ITEM-WISE DAILY SALES
+SELECT 
+    o.order_date,
+    m.item_name,
+    SUM(od.quantity) AS items_sold
+FROM orders o
+JOIN order_details od ON o.order_id = od.order_id
+JOIN menu_items m ON od.item_id = m.item_id
+GROUP BY o.order_date, m.item_name
+ORDER BY o.order_date, items_sold DESC;
