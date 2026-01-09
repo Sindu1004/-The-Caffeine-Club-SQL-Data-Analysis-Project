@@ -1,0 +1,19 @@
+-- WEEKLY SALES SUMMARY
+SELECT 
+    YEAR(order_date) AS year,
+    WEEK(order_date, 1) AS week,
+    COUNT(order_id) AS no_of_sales,
+    SUM(total_amount) AS total_revenue
+FROM orders
+GROUP BY year, week
+ORDER BY year, week;
+
+-- MONTHLY SALES SUMMARY
+SELECT 
+    YEAR(order_date) AS year,
+    MONTH(order_date) AS month,
+    COUNT(order_id) AS no_of_sales,
+    SUM(total_amount) AS total_revenue
+FROM orders
+GROUP BY year, month
+ORDER BY year, month;
